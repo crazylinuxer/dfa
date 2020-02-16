@@ -18,12 +18,12 @@ def yellow(inp: str) -> str:
 
 
 def underline(inp: str) -> str:
-    """Returns bold string to print"""
+    """Returns underlined string to print"""
     return "\033[4m" + inp + "\033[0m"
 
 
 def blue(inp: str) -> str:
-    """Returns bold string to print"""
+    """Returns string in blue color to print"""
     return "\033[94m" + inp + "\033[0m"
 
 

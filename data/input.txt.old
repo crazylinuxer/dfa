@@ -1,9 +1,0 @@
-#Will always start from q0
-#Alphabet must be described in "alphabet" order!
-#state	isfin	iserr	a	b	etc...
-
-q0	0	0	q1	q4
-q1	0	0	q4	q2
-q2	0	0	q4	q3
-q3	1	0	q3	q3
-q4	0	1	q4	q4
