@@ -2,6 +2,31 @@ from mapper import Map, State
 from parser import Parser
 
 
+def green(inp: str) -> str:
+    """Returns string in green color to print"""
+    return "\033[92m" + inp + "\033[0m"
+
+
+def red(inp: str) -> str:
+    """Returns string in red color to print"""
+    return "\033[91m" + inp + "\033[0m"
+
+
+def yellow(inp: str) -> str:
+    """Returns string in yellow color to print"""
+    return "\033[93m" + inp + "\033[0m"
+
+
+def underline(inp: str) -> str:
+    """Returns bold string to print"""
+    return "\033[4m" + inp + "\033[0m"
+
+
+def blue(inp: str) -> str:
+    """Returns bold string to print"""
+    return "\033[94m" + inp + "\033[0m"
+
+
 class Runner:
     def __init__(self):
         parser = Parser("./data/alphabet.txt", "./data/input.txt")
@@ -10,17 +35,27 @@ class Runner:
     def __call__(self, string_to_check: str, explain: bool = False) -> bool:
         current_state: State = self.map.initial_state
         if explain:
-            print("Beginning with state " + current_state.name)
+            func = yellow
+            if current_state.is_final:
+                func = green
+            elif current_state.is_error:
+                func = red
+            print("Beginning with state " + func(current_state.name))
         for symbol in string_to_check:
             if symbol not in self.map.alphabet:
                 if explain:
-                    print("Symbol " + symbol + " not found in the alphabet")
+                    print("Symbol " + underline(red(symbol)) + " not found in the alphabet")
                 return False
             if not current_state.is_present(symbol):
                 raise ValueError("Internal automaton error: cannot determine how to change state with symbol " + symbol)
             if explain:
-                print("Detected symbol " + symbol)
-                print("Changing state to " + current_state.next_state(symbol))
+                print("Detected symbol " + underline(blue(symbol)))
+                func = yellow
+                if self.map[current_state.next_state(symbol)].is_final:
+                    func = green
+                elif self.map[current_state.next_state(symbol)].is_error:
+                    func = red
+                print("Changing state to " + func(current_state.next_state(symbol)))
             current_state = self.map[current_state.next_state(symbol)]
             if current_state.is_error:
                 if explain:
@@ -41,10 +76,10 @@ if __name__ == "__main__":
     try:
         runner = Runner()
     except Exception as exc:
-        print("\033[91m" + "Error!" + "\033[0m")  # 'Error!' in red color
+        print(red("Error!"))
         print(exc.args[0])
         exit()
-    print("\033[92m" + "Done" + "\033[0m")  # 'Done' in green color
+    print(green("Done"))
 
     print("Would you like to see explanation of each automaton step? [Y/n]")
     try:
@@ -56,9 +91,12 @@ if __name__ == "__main__":
         while True:
             value = input("Enter the string to check: ")
             if runner(value, exp):
-                print("Accept")
+                print("    Accept " + green("✔️") + '\n')
             else:
-                print("Reject")
+                print("    Reject " + red("❌") + '\n')
     except (EOFError, KeyboardInterrupt):
         print()
+        exit()
+    except Exception as exc:
+        print(red(exc.args[0]))
         exit()
