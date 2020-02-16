@@ -41,10 +41,10 @@ if __name__ == "__main__":
     try:
         runner = Runner()
     except Exception as exc:
-        print("\033[91m" + "Error!" + "\033[0m")
+        print("\033[91m" + "Error!" + "\033[0m")  # 'Error!' in red color
         print(exc.args[0])
         exit()
-    print("\033[92m" + "Done" + "\033[0m")  # just 'Done' in green color
+    print("\033[92m" + "Done" + "\033[0m")  # 'Done' in green color
 
     print("Would you like to see explanation of each automaton step? [Y/n]")
     try:
