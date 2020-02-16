@@ -38,7 +38,12 @@ class Runner:
 
 if __name__ == "__main__":
     print("Building state map... ", end='', flush=True)
-    runner = Runner()
+    try:
+        runner = Runner()
+    except Exception as exc:
+        print("\033[91m" + "Error!" + "\033[0m")
+        print(exc.args[0])
+        exit()
     print("\033[92m" + "Done" + "\033[0m")  # just 'Done' in green color
 
     print("Would you like to see explanation of each automaton step? [Y/n]")
