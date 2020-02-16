@@ -1,4 +1,4 @@
-from mapper import Map
+from mapper import Map, State
 from parser import Parser
 
 
@@ -8,7 +8,7 @@ class Runner:
         self.map = Map(parser.parse_alphabet(), parser.parse_input())
 
     def __call__(self, string_to_check: str, explain: bool = False) -> bool:
-        current_state = self.map.initial_state
+        current_state: State = self.map.initial_state
         if explain:
             print("Beginning with state " + current_state.name)
         for symbol in string_to_check:
@@ -16,12 +16,12 @@ class Runner:
                 if explain:
                     print("Symbol " + symbol + " not found in the alphabet")
                 return False
-            if symbol not in current_state.local_map.keys():
+            if not current_state.is_present(symbol):
                 raise ValueError("Internal automaton error: cannot determine how to change state with symbol " + symbol)
             if explain:
                 print("Detected symbol " + symbol)
-                print("Changing state to " + current_state.local_map[symbol])
-            current_state = self.map[current_state.local_map[symbol]]
+                print("Changing state to " + current_state.next_state(symbol))
+            current_state = self.map[current_state.next_state(symbol)]
             if current_state.is_error:
                 if explain:
                     print("Detected error state")

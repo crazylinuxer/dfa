@@ -38,7 +38,7 @@ class StateGenerator:
         new_state = State(line[0], is_error, is_final)
         iterator = 3
         for letter in self.alphabet:
-            new_state.local_map[letter] = line[iterator]
+            new_state.add_jump(letter, line[iterator])
             iterator += 1
         return new_state
 
