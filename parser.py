@@ -28,13 +28,13 @@ class StateGenerator:
         elif line[1] == '0':
             is_final = False
         else:
-            raise ValueError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
+            raise RuntimeError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
         if line[2] == '1':
             is_error = True
         elif line[2] == '0':
             is_error = False
         else:
-            raise ValueError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
+            raise RuntimeError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
         new_state = State(line[0], is_error, is_final)
         iterator = 3
         for letter in self.alphabet:
@@ -71,7 +71,7 @@ class Parser:
             result = file.read().strip().replace(',', ' ').replace('.', ' ').strip().split()
             for letter in result:
                 if len(letter) > 1:
-                    raise ValueError("Error while parsing alphabet: letter must be a single char")
+                    raise RuntimeError("Error while parsing alphabet: letter must be a single char")
                 if len(letter) == 1:
                     parsed.add(letter)
         return parsed

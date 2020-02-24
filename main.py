@@ -47,7 +47,7 @@ class Runner:
                     print("Symbol " + underline(red(symbol)) + " not found in the alphabet")
                 return False
             if not current_state.is_present(symbol):
-                raise ValueError("Internal automaton error: cannot determine how to change state with symbol " + symbol)
+                raise RuntimeError("Internal automaton error: cannot determine how to change state with symbol " + symbol)
             if explain:
                 print("Detected symbol " + underline(blue(symbol)))
                 func = yellow
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         runner = Runner()
     except Exception as exc:
         print(red("Error!"))
-        print(exc.args[0])
+        print(red(exc.args[0]))
         exit()
     print(green("Done"))
 

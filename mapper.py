@@ -22,7 +22,7 @@ class State:
 
     def add_jump(self, letter: str, state: str):
         if self._local_map.get(letter):
-            raise ValueError("Letter " + letter + " already exists in " + self.name + " local map")
+            raise RuntimeError("Letter " + letter + " already exists in " + self.name + " local map")
         self._local_map[letter] = state
 
     def next_state(self, letter: str) -> str:
@@ -75,4 +75,4 @@ class Map:
             if self._data[state].is_final:
                 end = True
         if not end:
-            raise ValueError("Cannot define finite automaton without any final state")
+            raise RuntimeError("Cannot define DFA without any final state")
