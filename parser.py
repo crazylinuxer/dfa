@@ -29,14 +29,8 @@ class StateGenerator:
             is_final = False
         else:
             raise RuntimeError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
-        if line[2] == '1':
-            is_error = True
-        elif line[2] == '0':
-            is_error = False
-        else:
-            raise RuntimeError("Cannot parse input file" + (": error in line " + str(number)) if number else '')
-        new_state = State(line[0], is_error, is_final)
-        iterator = 3
+        new_state = State(line[0], is_final)
+        iterator = 2
         for letter in self.alphabet:
             new_state.add_jump(letter, line[iterator])
             iterator += 1

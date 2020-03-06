@@ -2,19 +2,14 @@ from typing import List, Dict, Set
 
 
 class State:
-    def __init__(self, name, is_err=False, is_end=False, local_map: Dict[str, str] = None):
+    def __init__(self, name, is_end=False, local_map: Dict[str, str] = None):
         """
         :param name: name of state
         :param local_map: dict in which keys are letters and values are state names to move automaton to
         """
         self.name = name
-        self._is_err = is_err
         self._is_end = is_end
         self._local_map: Dict[str, str] = local_map if local_map and all(local_map.keys()) else dict()
-
-    @property
-    def is_error(self):
-        return self._is_err
 
     @property
     def is_final(self):

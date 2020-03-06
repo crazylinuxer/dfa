@@ -35,11 +35,10 @@ class Runner:
     def __call__(self, string_to_check: str, explain: bool = False) -> bool:
         current_state: State = self.map.initial_state
         if explain:
-            func = yellow
             if current_state.is_final:
                 func = green
-            elif current_state.is_error:
-                func = red
+            else:
+                func = yellow
             print("Beginning with state " + func(current_state.name))
         for symbol in string_to_check:
             if symbol not in self.map.alphabet:
@@ -50,17 +49,12 @@ class Runner:
                 raise RuntimeError("Internal automaton error: cannot determine how to change state with symbol " + symbol)
             if explain:
                 print("Detected symbol " + underline(blue(symbol)))
-                func = yellow
                 if self.map[current_state.next_state(symbol)].is_final:
                     func = green
-                elif self.map[current_state.next_state(symbol)].is_error:
-                    func = red
+                else:
+                    func = yellow
                 print("Changing state to " + func(current_state.next_state(symbol)))
             current_state = self.map[current_state.next_state(symbol)]
-            if current_state.is_error:
-                if explain:
-                    print("Detected error state")
-                return False
         if current_state.is_final:
             if explain:
                 print("Ended with final state")
