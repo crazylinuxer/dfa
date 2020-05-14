@@ -1,4 +1,12 @@
-from mapper import State, List, Set
+from mapper import State, Map, List, Set
+
+
+FILE_MSG = """#Will always start from first state by alphabet or q0 if present
+#Alphabet must be described in "alphabet" order!
+#Warning: author doesn't recommend you
+#to enter state names manually using '_' symbol
+#state\tisfin\ta\tb\tetc...\n
+"""
 
 
 class SmartRange:
@@ -38,9 +46,10 @@ class StateGenerator:
 
 
 class Parser:
-    def __init__(self, alphabet_filename: str, input_filename: str):
+    def __init__(self, alphabet_filename: str, input_filename: str, output_filename: str = None):
         self.input_file = input_filename
         self.alphabet_file = alphabet_filename
+        self.output_filename = output_filename if output_filename else input_filename
 
     def parse_input(self) -> List[State]:
         get_state = StateGenerator(self.parse_alphabet())
@@ -69,3 +78,15 @@ class Parser:
                 if len(letter) == 1:
                     parsed.add(letter)
         return parsed
+
+    def write_to_file(self, map_to_write: Map) -> None:
+        with open(self.output_filename, "w") as file:
+            file.write(FILE_MSG)
+            for state in map_to_write.data:
+                file.write(state + '\t' + str(int(map_to_write[state].is_final)) + '\t')
+                sorted_alphabet = list(map_to_write.alphabet)
+                sorted_alphabet.sort()
+                transitions_to_write = ''
+                for letter in sorted_alphabet:
+                    transitions_to_write += map_to_write[state].next_state(letter) + '\t'
+                file.write(transitions_to_write.strip() + '\n')

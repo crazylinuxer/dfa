@@ -29,8 +29,14 @@ def blue(inp: str) -> str:
 
 class Runner:
     def __init__(self):
-        parser = Parser("./data/alphabet.txt", "./data/input.txt")
-        self.map = Map(parser.parse_alphabet(), parser.parse_input())
+        self.parser = Parser("./data/alphabet.txt", "./data/input.txt")
+        self.map = Map(self.parser.parse_alphabet(), self.parser.parse_input())
+
+    def minimize(self):
+        states_at_beginning = len(self.map.data)
+        self.map.minimize()
+        if len(self.map.data) < states_at_beginning:
+            self.parser.write_to_file(self.map)
 
     def __call__(self, string_to_check: str, explain: bool = False) -> bool:
         current_state: State = self.map.initial_state
@@ -82,6 +88,14 @@ if __name__ == "__main__":
             exp = True
         else:
             exp = False
+        print("Try to minimize the dfa? On success it will be written back to file [Y/n]")
+        response = input()
+        if response in ['', 'y', 'Y', 'д', 'Д']:
+            minimizing = True
+        else:
+            minimizing = False
+        if minimizing:
+            runner.minimize()
         while True:
             value = input("Enter the string to check: ")
             if runner(value, exp):
@@ -92,5 +106,8 @@ if __name__ == "__main__":
         print()
         exit()
     except Exception as exc:
-        print(red(exc.args[0]))
+        if isinstance(exc.args, str):
+            print(red(exc.args))
+        else:
+            print(red(str.join('\n', exc.args)))
         exit()

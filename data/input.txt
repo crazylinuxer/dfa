@@ -1,10 +1,12 @@
-#Will always start from q0
+#Will always start from first state by alphabet or q0 if present
 #Alphabet must be described in "alphabet" order!
+#Warning: author doesn't recommend you
+#to enter state names manually using '_' symbol
 #state	isfin	a	b	etc...
 
-$start	0	1	2	3
-1	0	2	3	4
-2	0	3	4	5
-3	0	4	5	1
-4	0	5	1	2
-5	1	1	2	3
+a	0	b	c
+b	0	a	d
+c	1	e	f
+d	1	e	f
+e	1	e	f
+f	0	f	f
