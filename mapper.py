@@ -57,7 +57,7 @@ class Map:
 
     @property
     def initial_state(self) -> State:
-        return self["q0"] if self["q0"] else self[min(self._data.keys())]
+        return self[min(self._data.keys())]
 
     def check_integrity(self) -> None:
         end = False

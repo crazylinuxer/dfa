@@ -1,4 +1,4 @@
-#Will always start from first state by alphabet or q0 if present
+#Will always start from first state by alphabet
 #Alphabet must be described in "alphabet" order!
 #Warning: author doesn't recommend you
 #to enter state names manually using '_' symbol
