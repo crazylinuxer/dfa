@@ -129,7 +129,7 @@ class Map:
                 result.append(pair)
         return [tuple(data) for data in set(result)]
 
-    def replace_states(self, states_to_replace: Tuple[str], new_name: str) -> None:
+    def _replace_states(self, states_to_replace: Tuple[str], new_name: str) -> None:
         new_is_final = None
         transitions = dict()
         for state in states_to_replace:
@@ -142,6 +142,7 @@ class Map:
                 for letter in self.alphabet:
                     if self[state].next_state(letter) in states_to_replace:
                         transitions[letter] = new_name
+        '''
             else:
                 tmp_transitions = dict()
                 for letter in self.alphabet:
@@ -151,6 +152,7 @@ class Map:
                     tmp_transitions[letter] = next_state
                 if tmp_transitions != transitions:
                     raise ValueError("Cannot combine states with different transitions")
+        '''  # this commented code checks some shit but idk if it works properly or not and is it needed
         for state_to_delete in states_to_replace:
             del self._data[state_to_delete]
         for state_to_replace in self._data:
@@ -165,4 +167,4 @@ class Map:
 
     def minimize(self) -> None:
         for state_tuple in self._get_states_to_combine():
-            self.replace_states(state_tuple, '_'.join(sorted(state_tuple)))
+            self._replace_states(state_tuple, '_'.join(sorted(state_tuple)))
